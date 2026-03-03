@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Gyomei.Handlers;
 using Microsoft.EntityFrameworkCore;
 
 namespace Gyomei.Models;
@@ -31,6 +32,16 @@ public partial class GyomeiDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+        _ = modelBuilder.Entity<User>().HasData([
+            new User
+            {
+                Id = 1,
+                Name = "Admin User",
+                Email = "admin@gmail.com",
+                PasswordHash = PasswordHashHandler.HashPassword("Admin@123"),
+            }
+            ]);
         modelBuilder.Entity<Role>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Roles__3214EC07979F19F6");
